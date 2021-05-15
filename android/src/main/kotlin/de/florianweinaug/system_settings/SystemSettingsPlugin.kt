@@ -4,13 +4,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
-import androidx.annotation.NonNull;
+import androidx.annotation.NonNull
+import androidx.core.app.NotificationManagerCompat
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
-import java.lang.Exception
 
 public class SystemSettingsPlugin(private val registrar: Registrar): MethodCallHandler {
   companion object {
@@ -25,6 +25,7 @@ public class SystemSettingsPlugin(private val registrar: Registrar): MethodCallH
     when (call.method) {
       "app"                 -> openAppSettings()
       "app-notifications"   -> openAppNotificationSettings()
+      "open-app-notifications" -> isOpenAppNotificationSettings(result)
       "system"              -> openSystemSettings()
       "location"            -> openSetting(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
       "wifi"                -> openSetting(Settings.ACTION_WIFI_SETTINGS)
@@ -69,6 +70,11 @@ public class SystemSettingsPlugin(private val registrar: Registrar): MethodCallH
 
     registrar.context().startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
   }
+
+    private fun isOpenAppNotificationSettings(result: Result) {
+        val open = NotificationManagerCompat.from(registrar.context()).areNotificationsEnabled();
+        result.success(open);
+    }
 
   private fun openSetting(name: String) {
     try {

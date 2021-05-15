@@ -4,8 +4,16 @@ import 'package:system_settings/system_settings.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  bool open = false;
+
+  init() async {
+    open = await SystemSettings.isOpenNotifications();
+    print('MyApp=>$open');
+  }
+
   @override
   Widget build(BuildContext context) {
+    init();
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -18,6 +26,10 @@ class MyApp extends StatelessWidget {
               ElevatedButton(
                 child: Text('App info'),
                 onPressed: () => SystemSettings.app(),
+              ),
+              ElevatedButton(
+                child: Text('is OPen Notify'),
+                onPressed: () => SystemSettings.appNotifications(),
               ),
               ElevatedButton(
                 child: Text('App notifications'),

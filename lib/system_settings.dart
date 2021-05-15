@@ -13,6 +13,10 @@ class SystemSettings {
     return await _channel.invokeMethod('app-notifications');
   }
 
+  static Future<bool> isOpenNotifications() async {
+    return await _channel.invokeMethod('open-app-notifications');
+  }
+
   static Future<void> system() async {
     return await _channel.invokeMethod('system');
   }
